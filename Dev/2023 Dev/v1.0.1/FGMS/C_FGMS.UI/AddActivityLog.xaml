@@ -1,0 +1,61 @@
+﻿<Window x:Class="C_FGMS.UI.AddActivityLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C_FGMS.UI"
+        xmlns:local1="clr-namespace:C_FGMS.UI.Converters"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Add Activity Log" Height="400" Width="500" ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <local1:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
+    </Window.Resources>
+
+    <!--Author: Tyler Moody-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Save and cancel buttons. -->
+        <Grid HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnSave" Grid.Column="0" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding AddCommand}" IsEnabled="{Binding HasErrors, Converter={StaticResource BoolToOppositeBoolConverter}}">
+                <Image Source="/resources/save-icon.png" ToolTip="Save"/>
+            </Button>
+            <Button x:Name="btnCancel" VerticalAlignment="Top" Margin="5,0,5,0" HorizontalAlignment="Right" Grid.Column="1" Click="btnCancel_Click">
+                <Image Source="/resources/cancel-icon.png" ToolTip="Cancel"/>
+            </Button>
+        </Grid>
+
+        <!-- Activity log fields -->
+
+        <!--<hc:ComboBox Grid.Row="1" ItemsSource="{Binding Volunteers}" SelectedItem="{Binding Path=SelectedVolunteer, Mode=TwoWay}" DisplayMemberPath="FullName" SelectedValue="Tuid" AutoComplete="True" ShowClearButton="True" IsEditable="True" Width="auto" Height="auto" 
+                             hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Select Volunteer" Margin="10" Name="selectedVolunteer"/>-->
+        
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <TextBlock HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" Text="{Binding SelectedVolunteer.FullName}" VerticalAlignment="Top" Width="100" Height="16"/>
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <hc:DatePicker SelectedDate="{Binding NewDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="424" Name="txtDate" hc:InfoElement.Title="Select Date:" TabIndex="0"/>
+        </Grid>
+        <Grid Grid.Row="3" HorizontalAlignment="Center">
+            <hc:TextBox Text="{Binding NewInitial,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="424" Name="txtInitial" hc:InfoElement.Title="Enter Initials: " MaxLines="1" TabIndex="1"/>
+        </Grid>
+        <Grid Grid.Row="4" HorizontalAlignment="Center">
+            <hc:TextBox Text="{Binding NewIncident,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="424" Name="txtIncident" hc:InfoElement.Title="Enter Incident: " MaxLines="4" TabIndex="2"/>
+        </Grid>
+    </Grid>
+</Window>

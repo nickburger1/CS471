@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "C_FGMS.UI": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "C_FGMS.UI Prod": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT ": "Production"
+      }
+    }
+  }
+}

@@ -1,0 +1,128 @@
+<Window x:Class="C_FGMS.UI.EditSelectedSchool"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C_FGMS.UI" xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="Edit School" Height="500" Width="650">
+    <!--Author: Kiefer Thorson-->
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="43*"/>
+                <RowDefinition Height="199*"/>
+            </Grid.RowDefinitions>
+            <!--The scroll viewer for growls that Isabell Johns used-->
+            <ScrollViewer Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Panel.ZIndex="1000" 
+                      VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" Margin="0,0,-2,0" >
+                <StackPanel VerticalAlignment="Top" x:Name="stkGrowl" Margin="0,0,-2,0" Effect="{StaticResource EffectShadow1}"/>
+            </ScrollViewer>
+            <!--Top part of form (Name/Contact Info)-->
+            <Grid HorizontalAlignment="Center" Height="351" Margin="0,10,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="618">
+                <!--Labels-->
+                <TextBlock HorizontalAlignment="Left" Margin="33,8,0,0" TextWrapping="Wrap" Text="Edit School Name:" VerticalAlignment="Top" Width="100" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" Margin="33,73,0,0" TextWrapping="Wrap" Text="Address:" VerticalAlignment="Top" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" Margin="33,148,0,0" TextWrapping="Wrap" Text="City:" VerticalAlignment="Top" Height="16" />
+                <TextBlock HorizontalAlignment="Left" Margin="33,220,0,0" TextWrapping="Wrap" Text="State:" VerticalAlignment="Top" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" Margin="33,290,0,0" TextWrapping="Wrap" Text="Zip Code:" VerticalAlignment="Top" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" Margin="355,73,0,0" TextWrapping="Wrap" Text="Phone Number:" VerticalAlignment="Top" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" Margin="355,148,0,0" TextWrapping="Wrap" Text="Principal:" VerticalAlignment="Top" Height="16"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Secretary:" VerticalAlignment="Top" Height="16" Margin="355,220,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top" Height="16" Margin="379,285,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="InActive" VerticalAlignment="Top" Height="16" Margin="321,318,0,0"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Active" VerticalAlignment="Top" Height="16" Margin="435,318,0,0"/>
+                <TextBlock HorizontalAlignment="Left" Margin="33,358,0,0" TextWrapping="Wrap" Text="School Hours:" VerticalAlignment="Top" Height="16" />
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Margin="488,285,0,0" Text="Edit Time"/>
+
+                <!--Entry Boxes-->
+                <TextBox HorizontalAlignment="Left" Margin="3,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="606" x:Name="txtSchoolName" Height="30" TextChanged="validateName"/>
+                <TextBox HorizontalAlignment="Left" Margin="3,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" x:Name ="txtAddress" Height="30" />
+                <TextBox HorizontalAlignment="Left" Margin="3,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" x:Name ="txtCity" Height="30" TextChanged="validateCity"/>
+                <ComboBox HorizontalAlignment="Left" Height="30" Margin="3,241,0,0" VerticalAlignment="Top" Width="145" x:Name="cbxState" />
+                <TextBox HorizontalAlignment="Left" Margin="3,311,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="290" x:Name ="txtZipCode" Height="30" TextChanged="validateZip" />
+                <TextBox HorizontalAlignment="Left" Height="24" Margin="321,103,0,0" TextWrapping="Wrap" Text="1 (" VerticalAlignment="Top" Width="34" IsEnabled="False"/>
+                <TextBox HorizontalAlignment="Left" Margin="355,103,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="70" x:Name ="txtPhoneNum1" Height="30" TextChanged="validatePhoneNum1"/>
+                <TextBox HorizontalAlignment="Left" Height="24" Margin="425,103,0,0" TextWrapping="Wrap" Text=")" VerticalAlignment="Top" Width="21" IsEnabled="False"/>
+                <TextBox HorizontalAlignment="Left" Margin="446,103,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="70" x:Name ="txtPhoneNum2" Height="30" TextChanged="validatePhoneNum2"/>
+                <TextBox HorizontalAlignment="Left" Height="24" Margin="516,103,0,0" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" Width="21" IsEnabled="False"/>
+                <TextBox HorizontalAlignment="Left" Margin="537,103,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="74" x:Name ="txtPhoneNum3" Height="30" TextChanged="validatePhoneNum3"/>
+                <TextBox HorizontalAlignment="Left" Margin="321,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" x:Name ="txtPrincipal" Height="30" TextChanged="validatePrincipal"/>
+                <TextBox HorizontalAlignment="Left" Margin="321,241,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="290" x:Name ="txtSecretary" Height="30" TextChanged="validateSecretary"/>
+
+                <!--Status Toggle Button-->
+                <ToggleButton Style="{hc:StaticResource ToggleButtonSwitch}" IsEnabled="True" HorizontalAlignment="Left" Margin="374,311,0,0" VerticalAlignment="Top" Width="44" Height="30" x:Name ="tglStatus" />
+
+                <!--Time Editing Toggle Button-->
+                <ToggleButton Style="{hc:StaticResource ToggleButtonSwitch}" IsEnabled="True" HorizontalAlignment="Left" Margin="491,311,0,0" VerticalAlignment="Top" Width="44" Height="30" x:Name ="tglEditTime" Checked="tglEditTime_Checked" Unchecked="tglEditTime_Checked" />
+                
+                <!-- Button for saving changed time-->
+                <Button Content="Save" HorizontalAlignment="Left" Height="30" Margin="551,311,0,0" VerticalAlignment="Top" Width="60" Visibility="Visible" x:Name="btnSaveTime" Click="btnSaveTime_Click"/>
+            </Grid>
+
+            <!--Bottom part of form (Days/Times)-->
+            <Grid HorizontalAlignment="Center" Height="63" Margin="0,289,0,0" VerticalAlignment="Top" Width="608" Grid.Row="1" >
+
+                <!--Time Labels-->
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Start" VerticalAlignment="Top" Margin="10,32,0,0"/>
+                <TextBlock HorizontalAlignment="Left" Margin="164,32,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top"/>
+
+
+                <!--Time Pickers For Editing Time-->
+                <Grid HorizontalAlignment="Left" Height="40" Margin="317,24,0,0" VerticalAlignment="Top" Width="284" Name="grdTimePickers" Visibility="Hidden">
+                    <hc:TimePicker HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" x:Name ="tpStart" Height="29" Width="115" Text="" TimeFormat="h:mm tt" />
+                    <hc:TimePicker HorizontalAlignment="Left" Margin="158,0,0,0" VerticalAlignment="Top" x:Name ="tpEnd" Height="30" Width="115" TimeFormat="h:mm tt"/>
+                </Grid>
+
+
+                <!--Labels displaying selected time-->
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Start" VerticalAlignment="Top" Margin="45,32,0,0" Name="txtStartTime" />
+                <TextBlock HorizontalAlignment="Left" Margin="199,32,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top" Name="txtEndTime" />
+
+                <!--Contains Day Selection-->
+                <Grid HorizontalAlignment="Left" Height="40" Margin="317,24,0,0" VerticalAlignment="Top" Width="283" Name="grdDatePickers" >
+                    <!--Labels-->
+                    <TextBlock HorizontalAlignment="Left" Margin="56,22,0,0" TextWrapping="Wrap" Text="M" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="99,22,0,0" TextWrapping="Wrap" Text="T" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,23,0,0" TextWrapping="Wrap" Text="W" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="175,22,0,0" TextWrapping="Wrap" Text="TH" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="219,22,0,0" TextWrapping="Wrap" Text="F" VerticalAlignment="Top"/>
+                    <!--Checkboxes-->
+                    <CheckBox HorizontalAlignment="Left" Margin="54,2,0,0" x:Name="chkMonday" VerticalAlignment="Top"/>
+                    <CheckBox HorizontalAlignment="Left" Margin="94,2,0,0" x:Name="chkTuesday" VerticalAlignment="Top"/>
+                    <CheckBox HorizontalAlignment="Center" x:Name="chkWednesday" VerticalAlignment="Top" Margin="0,2,0,0"/>
+                    <CheckBox HorizontalAlignment="Left" Margin="174,2,0,0" x:Name="chkThursday" VerticalAlignment="Top"/>
+                    <CheckBox HorizontalAlignment="Left" Margin="214,2,0,0" x:Name="chkFriday" VerticalAlignment="Top"/>
+                </Grid>
+                <TextBlock HorizontalAlignment="Left" Margin="28,0,0,0" TextWrapping="Wrap" Text="School Hours:" VerticalAlignment="Top" Height="16" />
+
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Edit Start Time:" VerticalAlignment="Top" Height="16" Margin="342,0,0,0" x:Name="txtEditStartTimeLabel" Visibility="Hidden"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Edit End Time:" VerticalAlignment="Top" Height="16" Margin="494,0,0,0" x:Name="txtEditEndTimeLabel" Visibility="Hidden"/>
+
+
+            </Grid>
+
+
+            <!--Buttons at top-->
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnReport" Margin="5,5,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Padding="0" Click="btnExcelReport_Click" BorderThickness="0" ToolTip="Export To Excel">
+                    <Image Source="/resources/reports-icon.png" />
+                </Button>
+
+                <Button x:Name="btnSave" Grid.Column="1" Click="btnSave_Click"  Margin="5,5,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="0" BorderThickness="0" ToolTip="Save Changes">
+                    <Image Source="/resources/save-icon.png" />
+                </Button>
+                <Button x:Name="btnCancel" VerticalAlignment="Top" Margin="5,5,5,0" HorizontalAlignment="Right" Grid.Column="2"  Click="btnCancel_Click" Padding="0" BorderThickness="0" ToolTip="Discard Changes">
+                    <Image Source="/resources/cancel-icon.png"/>
+                </Button>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

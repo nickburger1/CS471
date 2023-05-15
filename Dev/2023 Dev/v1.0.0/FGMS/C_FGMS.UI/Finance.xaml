@@ -1,0 +1,50 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:C_FGMS.UI"
+      xmlns:hc="https://handyorg.github.io/handycontrol" x:Class="C_FGMS.UI.Finance"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="900"
+      Title="Finance"
+      >
+<!--Main Grid Control for page-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="13*"/>
+            </Grid.RowDefinitions>
+            <!--Tab control, style used from volunteer page-->
+            <hc:TabControl  Margin="0" Style="{DynamicResource TabControlBaseStyle}" Name="FinanceTabControl" 
+                            SelectionChanged="FinanceTabControlSelectionChanged" BorderThickness="0" Height="auto">
+            <hc:TabControl.Resources>
+                <Style TargetType="TabPanel">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                </Style>
+                <Style x:Key="tabStyle" TargetType="hc:TabItem" BasedOn="{StaticResource TabItemInLine}">
+                    <Style.Setters>
+                        <Setter Property="BorderBrush" Value="Salmon"/>
+                    </Style.Setters>
+                </Style>
+            </hc:TabControl.Resources>
+            <!--General Tab-->
+                <hc:TabItem Header="General" Name="FinanceGeneralTab" Style="{StaticResource tabStyle}"/>
+                <!-- Start of Meal and Transport -->
+                <hc:TabItem Header="Meal And Transport" Style="{StaticResource tabStyle}"/>
+                <!-- Start of PTO -->
+                <hc:TabItem Header="PTO" Style="{StaticResource tabStyle}"/>
+                <!--Fiscal Year Tab-->
+                <hc:TabItem Header="Fiscal Year" Style="{StaticResource tabStyle}"/>
+                <!--Grant Year Tab-->
+                <hc:TabItem Header="Grant Year" Style="{StaticResource tabStyle}"/>
+
+
+            </hc:TabControl>
+            <Frame x:Name="FinanceMainFrame" NavigationUIVisibility="Hidden" Grid.Row="1" />
+            
+
+            
+        
+    </Grid>
+</Page>

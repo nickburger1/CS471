@@ -1,0 +1,68 @@
+﻿<Window x:Class="C_FGMS.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:C_FGMS.UI"
+        mc:Ignorable="d"
+        Title="Grandparent Education Management System (GEM)" Height="560" Width="1000" MinWidth="1000" MinHeight="560" Icon="/Resources/GEM_icon.ico">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Grid x:Name="grdNavigation" DockPanel.Dock="Left">
+                <Grid Width="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image  Width="150" VerticalAlignment="Bottom" Grid.Row="0" HorizontalAlignment="Center"/>
+                    <hc:SideMenu HorizontalAlignment="Center" Width="150" ItemContainerStyle="{DynamicResource SideMenuItemBaseStyle}" 
+                                 Grid.Row="0" SelectionChanged="SideMenu_SelectionChanged" x:Name="mnuSideMenu">
+                        <hc:SideMenu.Resources>
+                            <Style TargetType="hc:SelectableItem">
+                                <Setter Property="Margin" Value="0,0,0,20"/>
+                            </Style>
+                        </hc:SideMenu.Resources>
+
+                        <hc:SideMenuItem Header="Home" Padding="0,20,0,20" IsSelected="True">
+                            <hc:SideMenuItem.Icon>
+                                <Image Source="/Resources/home-icon.png" Width="24" Height="24"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="Volunteers" Padding="0,20,0,20">
+                            <hc:SideMenuItem.Icon>
+                                <Image Width="24" Height="24" Source="/Resources/Volunteers-icon.png"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="Schools" Padding="0,20,0,20">
+                            <hc:SideMenuItem.Icon>
+                                <Image Width="24" Height="24" Source="/Resources/School-icon.png"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="Finance" Padding="0,20,0,20">
+                            <hc:SideMenuItem.Icon>
+                                <Image Width="24" Height="24" Source="/Resources/finance-icon.png"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Header="Reports" Padding="0,20,0,20">
+                            <hc:SideMenuItem.Icon>
+                                <Image Source="/Resources/ReportPage-Icon.png" Width="24" Height="24"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                        <hc:SideMenuItem Name="smiAdminPage" Header="Admin" Padding="0,20,0,20">
+                            <hc:SideMenuItem.Icon>
+                                <Image Source="/Resources/users-icon.png" Width="24" Height="24"/>
+                            </hc:SideMenuItem.Icon>
+                        </hc:SideMenuItem>
+                    </hc:SideMenu>
+                    <DockPanel Grid.Row="1" LastChildFill="False">
+                        <Button x:Name="btnLogout" DockPanel.Dock="Bottom" Margin="0,0,0,20" FontSize="14" Padding="20,0,20,0" Click="btnLogout_Click" ToolTip="Logging out will close the application">Logout</Button>
+                    </DockPanel>
+                </Grid>
+            </Grid>
+            <hc:Divider x:Name="grdNavigationDivider" Margin="0" Width="2" Background="Black" BorderBrush="Black" />
+            <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden" Style="{DynamicResource FrameBaseStyle}"/>
+        </DockPanel>
+    </Grid>
+    
+</Window>

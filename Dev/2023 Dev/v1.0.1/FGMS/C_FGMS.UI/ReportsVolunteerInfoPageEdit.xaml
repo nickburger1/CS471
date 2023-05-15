@@ -1,0 +1,88 @@
+﻿<Window x:Class="C_FGMS.UI.ReportsVolunteerInfoPageEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C_FGMS.UI"
+        mc:Ignorable="d"
+        xmlns:local1="clr-namespace:C_FGMS.UI.Converters"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Edit Volunteer Information" Height="700" Width="800"  ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <local1:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="ToggleButton" BasedOn="{hc:StaticResource ToggleButtonSwitch}">
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Save and cancel buttons. -->
+        <Grid Grid.Column="1" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnSave" Grid.Column="0" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btnSave_Click"  Command="{Binding UpdateCommand}" IsEnabled="{Binding HasErrors, Converter={StaticResource BoolToOppositeBoolConverter}}">
+                <Image Source="/resources/save-icon.png" ToolTip="Save"/>
+            </Button>
+            <Button x:Name="btnCancel" VerticalAlignment="Top" Margin="5,0,5,0" HorizontalAlignment="Right" Grid.Column="1" Click="btnCancel_Click">
+                <Image Source="/resources/cancel-icon.png" ToolTip="Cancel"/>
+            </Button>
+        </Grid>
+
+        <!-- First Column -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" HorizontalAlignment="Stretch" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" Name="txtFirstName" hc:InfoElement.Title="First Name: " MaxLines="1" TabIndex="0"  hc:InfoElement.Placeholder="First Name"/>
+            <hc:TextBox Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding LastName,UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Width="auto" Name="txtLastName" hc:InfoElement.Title="Last Name: " MaxLines="1" TabIndex="0"  hc:InfoElement.Placeholder="Last Name"/>
+        </Grid>
+
+        <hc:DatePicker Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" SelectedDate="{Binding DateOfBirth, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" VerticalAlignment="Top" Width="auto" Name="txtDateOfBirth" hc:InfoElement.Title="Select Date of Birth:" TabIndex="1"  hc:InfoElement.Placeholder="Date of Birth"/>
+
+        <hc:ComboBox x:Name="comboGender" Grid.Row="3" Grid.Column="0"  ItemsSource="{Binding Genders}" SelectedItem="{Binding Path=SelectedGender, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="Tuid" AutoComplete="True" IsEditable="True" Width="auto" Height="auto" 
+                                 hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Gender" Margin="10" Text="All" hc:InfoElement.Placeholder="Gender" TabIndex="2" Loaded="comboGender_Loaded_Gender"/>
+
+        <hc:ComboBox x:Name="comboIdentifies" Grid.Row="4" Grid.Column="0"  ItemsSource="{Binding Identifies}" SelectedItem="{Binding Path=SelectedIdentifiesAs, TargetNullValue='', Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="Tuid" AutoComplete="True" IsEditable="True" Width="auto" Height="auto" 
+                                 hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Identifies As" Margin="10" Text="All" hc:InfoElement.Placeholder=" Identifies As" TabIndex="3" Loaded="ComboBox_Loaded_Identifies"/>
+
+        <hc:ComboBox x:Name="comboEthnicity" Grid.Row="5" Grid.Column="0"  ItemsSource="{Binding Ethnicity}" SelectedItem="{Binding Path=SelectedEthnicity, TargetNullValue='', Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="Tuid" AutoComplete="True" IsEditable="True" Width="auto" Height="auto" 
+                                 hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Ethnicity" Margin="10" Text="All" hc:InfoElement.Placeholder="Ethnicity" TabIndex="4" Loaded="ComboBox_Loaded_Ethnicity"/>
+
+        <hc:ComboBox x:Name="comboRacialGroup" Grid.Row="6" Grid.Column="0"  ItemsSource="{Binding RacialGroup}" SelectedItem="{Binding Path=SelectedRacialGroup, TargetNullValue='', Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="Tuid" AutoComplete="True" IsEditable="True" Width="auto" Height="auto" 
+                                 hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Racial Group" Margin="10" Text="All" hc:InfoElement.Placeholder="Racial Group" TabIndex="5" Loaded="ComboBox_Loaded_RacialGroup"/>
+        
+        <!-- Second column -->
+ 
+        <ToggleButton Grid.Row="1" Grid.Column="1" Content="Veteran" HorizontalAlignment="Left"
+                                  x:Name="btnVeteran" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Veteran" Margin="10" TabIndex="6" IsChecked="{Binding IsVeteran}"/>
+        <ToggleButton Grid.Row="2" Grid.Column="1" Content="Family of Military" HorizontalAlignment="Left" TabIndex="7"
+                                  x:Name="btnFamilyMilitary" IsChecked="{Binding IsFamilyOfMilitary}"/>
+        <ToggleButton Grid.Row="3" Grid.Column="1" Content="Active" HorizontalAlignment="Left"
+                                  x:Name="btnStatus" TabIndex="8" IsChecked="{Binding IsActive}"/>
+
+        <hc:DatePicker Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" VerticalAlignment="Top" Width="auto" Name="txtStartDate" hc:InfoElement.Title="Start Date:" TabIndex="9" hc:InfoElement.Placeholder="Start Date"/>
+        <hc:DatePicker Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="10" VerticalAlignment="Top" Width="auto" Name="txtEndDate" hc:InfoElement.Title="End Date:" TabIndex="10" ShowClearButton="True"  hc:InfoElement.Placeholder="End Date"/>
+        <hc:ComboBox x:Name="comboSeparated" Grid.Row="6" Grid.Column="1"  ItemsSource="{Binding InactiveStatusTypes}" SelectedItem="{Binding Path=SelectedInactiveStatus, TargetNullValue='', Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="Tuid" AutoComplete="True" ShowClearButton="True" IsEditable="True" Width="auto" Height="60" 
+                                 hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="Reason Separated:" Margin="10" hc:InfoElement.Placeholder=" Reason Separated" TabIndex="11" Loaded="ComboBox_Loaded_Separated"/>
+    </Grid>
+</Window>

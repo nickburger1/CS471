@@ -1,0 +1,370 @@
+﻿<Page x:Class="C_FGMS.UI.FinanceYearPageBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:C_FGMS.UI"
+      xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:fiscalgrantviewmodels="clr-namespace:B_FGMS.BusinessLogic.ViewModels.FiscalGrantViewModels;assembly=B_FGMS.BusinessLogic" d:DataContext="{d:DesignInstance Type=fiscalgrantviewmodels:FocusTableViewModel}"
+      mc:Ignorable="d" 
+      d:DesignHeight="473.112" d:DesignWidth="900"
+      Title="FinanceYearPage">
+
+    <!--Page Name : FinanceYear
+    Page Author : Andrew Loesel
+    Date Created: 1/24/2023
+    Page Definition : This page shows 4 tables when first navigated to. A Meal-In-Kind table, a volunteer mileage table, a  year - date table and a bus transportation
+                      table. These are small tables which show very basic data. Each table has a view button. Once the view button on a table is clicked The grid that contains
+                      the main view will be set to not hidden and the grid for the focused view will then be set to visible. The backend will then populate the datagrid contained
+                      in the focus grid with data corresponding to the table that was focused.-->
+
+    <!--use an outer grid as a container for the normal view and focused view-->
+    <Grid>
+        <!--This grid contains the normal view of the  year page.-->
+        <Grid ShowGridLines="False" Name="GridNormalView" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="12*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- The Date range area-->
+            <hc:Card Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Select Date Range" HorizontalAlignment="Stretch" BorderThickness="0" Grid.Column="0"  x:Name="labelYearDateRange"/>
+                    <hc:ComboBox Name="cmbYearDateRange" ItemsSource="{Binding YearRanges}" SelectedItem="{Binding SelectedDateRange}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="auto" Grid.Column="1" Loaded="cmbYearDateRange_Loaded"/>
+                </Grid>
+            </hc:Card>
+            <!--The area for buttons-->
+            <hc:Card Grid.Row="0" Grid.Column="3" BorderThickness="0">
+                <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="btnFinanceExport" BorderThickness="0"  Grid.Column="1" ToolTip="Export to Excel" Padding="0" Margin="5,5,5,0" Command="{Binding ExportCommand}">
+                        <Image Source="\Resources\reports-icon.png"/>
+                    </Button>
+
+                    <Button Name="btnRefresh" BorderThickness="0" ToolTip="Refresh Data" Grid.Column="2" Padding="0" Margin="5,5,5,0" Click="btnRefresh_Click">
+                        <Image Source="\Resources\refresh-icon.png" />
+                    </Button>
+                </Grid>
+            </hc:Card>
+            <!--The Meal In Kind Table-->
+            <hc:Card Grid.Row="1" Grid.Column="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--Add an area for a focus button for this table-->
+                    <hc:Card Grid.Row="0">
+                        <Grid>
+                            <Label Content="Meal-In-Kind" BorderThickness="0"/>
+                            <Button Click="ShowMealInKindFocusTable" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="View as full window">
+                                <Image Source="\Resources\magnify-icon.png" />
+                            </Button>
+                        </Grid>
+                    </hc:Card>
+                    <DataGrid Name="dtgYearMealInKind" ItemsSource="{Binding MealTransportMainPage}" AutoGenerateColumns="False" Grid.Row="1" IsReadOnly="True"
+                              AlternatingRowBackground="LightGray" AlternationCount="2">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Salmon"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="20" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Quarter" Binding="{Binding strQuarter}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Date" Binding="{Binding strDate}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Value" Binding="{Binding strMealValue}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Label Content="Total:" BorderThickness="0" Grid.Row="2" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding MealTotal}" Name="lblYearMealInKindTotal" Grid.Row="2" VerticalAlignment="Center"/>
+                    </hc:SimpleStackPanel>
+
+                </Grid>
+
+            </hc:Card>
+            <!--The  Year To Date Table-->
+            <hc:Card Grid.Row="2" Grid.Column="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--Add an area for a focus button for this table-->
+                    <hc:Card Grid.Row="0">
+                        <Grid>
+
+                            <Label Content="In-Kind" BorderThickness="0" Grid.Column="0"/>
+                            <Button Grid.Column="1" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="View as full window" Click="ShowYearToDateFocusTable">
+                                <Image Source="\Resources\magnify-icon.png" />
+                            </Button>
+                        </Grid>
+
+                    </hc:Card>
+                    <DataGrid Name="dtgYearToDate" ItemsSource="{Binding YearToDateList}" AutoGenerateColumns="False" Grid.Row="1" IsReadOnly="True"
+                              AlternatingRowBackground="LightGray" AlternationCount="2">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Salmon"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="20" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Type" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Value" Binding="{Binding Value, StringFormat=c}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Label Content="Total:" BorderThickness="0" Grid.Row="2" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Name="lblYearToDateTotal" Text="{Binding InKindTotal}" Grid.Row="2" VerticalAlignment="Center"/>
+                    </hc:SimpleStackPanel>
+
+                </Grid>
+
+            </hc:Card>
+            <!--Area for the volunteer mileage table-->
+            <hc:Card Grid.Column="2" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--Add an area for a focus button for this table-->
+                    <hc:Card Grid.Row="0">
+                        <Grid>
+                            <Label Content="Volunteer Mileage" BorderThickness="0"/>
+                            <Button Click="ShowMileageFocusTable" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="View as full window">
+                                <Image Source="\Resources\magnify-icon.png" />
+                            </Button>
+                        </Grid>
+
+                    </hc:Card>
+                    <DataGrid Name="dtgYearVolunteerMileage" ItemsSource="{Binding MealTransportMainPage}" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                              AlternatingRowBackground="LightGray" AlternationCount="2">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Salmon"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="20" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Quarter" Binding="{Binding strQuarter}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Date" Binding="{Binding strDate}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Reimbursement" Binding="{Binding strMileageValue}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Label Content="Total:" BorderThickness="0" Grid.Row="2" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding MileageTotal}" Name="lblYearVolunteerMileageTotal" Grid.Row="2" VerticalAlignment="Center"/>
+                    </hc:SimpleStackPanel>
+
+                </Grid>
+            </hc:Card>
+            <!--The bus transportation table area -->
+            <hc:Card Grid.Row="2" Grid.Column="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--Add an area for a focus button for this table-->
+                    <hc:Card Grid.Row="0">
+                        <Grid>
+                            <Label Content="Bus Transportation" BorderThickness="0"/>
+                            <Button Click="ShowBusFocusTable" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="View as full window">
+                                <Image Source="\Resources\magnify-icon.png" />
+                            </Button>
+                        </Grid>
+
+                    </hc:Card>
+                    <DataGrid Name="dtgYearBusTransportation" ItemsSource="{Binding MealTransportMainPage}" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                              AlternatingRowBackground="LightGray" AlternationCount="2">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Salmon"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="20" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Quarter" Binding="{Binding strQuarter}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Date" Binding="{Binding strDate}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Billings" Binding="{Binding strBusValue}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Label Content="Total:" BorderThickness="0" Grid.Row="2" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding BusTotal}" Name="lblYearBusTransportationTotal" VerticalAlignment="Center" />
+                    </hc:SimpleStackPanel>
+
+                </Grid>
+            </hc:Card>
+
+        </Grid>
+        <!--This grid contains the view of our focused table. We start with the height of 0 so that it is not shown at all.-->
+        <Grid Name="GridYearFocusedView" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="11*" />
+            </Grid.RowDefinitions>
+            <!--Card for the top of the page, consisting of text, comboboxes and some image buttons-->
+            <hc:Card Grid.Row="0" BorderThickness="0" VerticalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Start Date" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <hc:DatePicker Name="dtpFocusStartDate" Grid.Row="0"  SelectedDate="{Binding SelectedFocusStartDate}" ShowClearButton="True"  Grid.Column="1" Loaded="dtpFocusStartDate_Loaded"/>
+                    <TextBlock Text="End Date" Grid.Column="2" Grid.Row="0"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <hc:DatePicker Name="dtpFocusEndDate" Grid.Row="0"   Grid.Column="3" SelectedDate="{Binding SelectedFocusEndDate}" ShowClearButton="True" Loaded="dtpFocusEndDate_Loaded"/>
+
+                    <!--The area for buttons-->
+                    <hc:Card Grid.Row="0" Grid.Column="7" BorderThickness="0">
+                        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnBack" Click="btnBack_Click" Grid.Column="0" ToolTip="Minimize Table">
+                                <Image Source="\Resources\minimize-icon.png" />
+                            </Button>
+                            <Button Name="btnFinanceFocusedExport" BorderThickness="0" ToolTip="Export to Excel" Grid.Column="1" Padding="0" Margin="5,5,5,0" Command="{Binding ExportCommand}">
+                                <Image Source="\Resources\reports-icon.png"/>
+                            </Button>
+                        </Grid>
+                    </hc:Card>
+                </Grid>
+
+            </hc:Card>
+
+            <!--This card will contain our template table-->
+            <hc:Card Grid.Row="1">
+                <!--Define the layout of this card with a grid-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="11*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding CurrentTitle}" Name="tbkTableName" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <!--The table that we want to generate programmatically-->
+                    <DataGrid Name="dtgFocusTable" ItemsSource="{Binding MealTransportMileageList}" AutoGenerateColumns="False" Grid.Row="1" ColumnWidth="*" Grid.Column="0" Grid.ColumnSpan="2" CanUserResizeColumns="False" IsReadOnly="True"
+                              AlternatingRowBackground="LightGray" AlternationCount="2">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Salmon"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Height" Value="20" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Setter Property="BorderThickness" Value="0"></Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Volunteer" Binding="{Binding Name}"/>
+                            <DataGridTextColumn x:Name="tbkQuarterColumn" Width="*" CanUserResize="False" Header="Quarter" Binding="{Binding Quarter}"/>
+                            <DataGridTextColumn x:Name="tbkDateColumn" Width="*" CanUserResize="False" Header="Date" Binding="{Binding Date}"/>
+                            <DataGridTextColumn x:Name="tbkRateColumn" Width="*" CanUserResize="False" Header="Rate" Binding="{Binding Rate, StringFormat=c}"/>
+                            <DataGridTextColumn x:Name="tbkCountColumn" Width="*" CanUserResize="False" Header="Count" Binding="{Binding Count}"/>
+                            <DataGridTextColumn Width="*" CanUserResize="False" Header="Value" Binding="{Binding Value, StringFormat=c}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="7">
+                        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                            <Label Content="Total: " FontWeight="DemiBold" BorderThickness="0" VerticalAlignment="Center"/>
+                            <TextBlock Name="lblFocusTotal" Text="{Binding FocusTotal}" VerticalAlignment="Center"/>
+                        </hc:SimpleStackPanel>
+                    </Grid>
+                </Grid>
+            </hc:Card>
+        </Grid>
+    </Grid>
+</Page>

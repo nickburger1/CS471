@@ -1,0 +1,293 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C_FGMS.UI"
+        xmlns:hc="https://handyorg.github.io/handycontrol" x:Name="winAddNewMonth" x:Class="C_FGMS.UI.AddNewPTOMonth"
+        mc:Ignorable="d"
+        Title="AddNewMonth" Height="600" Width="800">
+
+
+
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="299*"/>
+            <ColumnDefinition Width="501*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+
+
+
+        <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" x:Name="dtgPTO" ColumnHeaderHeight="25" RowHeight="40" Background="White"  
+            GridLinesVisibility="None" CanUserResizeColumns="False" IsReadOnly="True" Margin="0,265,0,10" SelectionChanged="dtgPTO_SelectionChanged" SelectionMode="Single" Grid.RowSpan="3" AlternationCount="2" AlternatingRowBackground="#FFD2C7C7" Grid.ColumnSpan="2">
+
+
+
+
+
+
+
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+
+                    <!-- Changes the row style template to have more advanced "borders" (dotted, dashed, etc.) based on value converters -->
+
+
+                    <!-- Part for odd rows. -->
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected"
+                          Value="False"/>
+                                <Condition Property="AlternationIndex"
+                          Value="1"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background"
+                       Value="Transparent"/>
+
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected"
+                          Value="True"/>
+                                <Condition Property="AlternationIndex"
+                          Value="1"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background"
+                       Value="LightGray"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <!-- Part for even rows. -->
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected"
+                          Value="False"/>
+                                <Condition Property="AlternationIndex"
+                          Value="0"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background"
+                       Value="Transparent"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected"
+                          Value="True"/>
+                                <Condition Property="AlternationIndex"
+                          Value="0"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Background"
+                       Value="Salmon"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+
+                    </Style.Triggers>
+
+
+
+
+                </Style>
+
+
+            </DataGrid.RowStyle>
+
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                      Value="True">
+                            <Setter Property="Background"
+                    Value="Transparent"/>
+
+                        </DataTrigger>
+                    </Style.Triggers>
+
+
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Grid Background="{TemplateBinding Background}">
+
+
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                </Grid>
+
+
+
+
+                            </ControlTemplate>
+
+
+
+
+                        </Setter.Value>
+
+
+
+
+                    </Setter>
+
+                </Style>
+            </DataGrid.CellStyle>
+
+
+
+
+
+
+
+
+
+
+
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="Salmon"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+
+
+            <DataGrid.Columns>
+
+
+
+
+                <DataGridTextColumn x:Name="colVolunteerName" Width="*" Header="Volunteer Name" Binding="{Binding strFullName}"/>
+                <DataGridTextColumn x:Name="colRegHours" Width="*" Header="Reg Hours" Binding="{Binding RegularHours}" />
+                <DataGridTextColumn x:Name="colPtoUsed" Width="*" Header="PTO Used" Binding="{Binding PtoUsed}"/>
+                <DataGridTemplateColumn Width="*" Header="Eligibility">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <!-- Will want to write a method in backend that changes IsActive based on the ToggleButton-->
+                            <ToggleButton  IsChecked="{Binding IsPTOEligible}" Style="{StaticResource ToggleButtonSwitch}" IsEnabled="True"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <Grid Margin="0,163,0,0" Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="131*"/>
+                <ColumnDefinition Width="128*"/>
+                <ColumnDefinition Width="139*"/>
+                <ColumnDefinition Width="124*"/>
+                <ColumnDefinition Width="118*"/>
+                <ColumnDefinition Width="125*"/>
+
+            </Grid.ColumnDefinitions>
+
+
+
+            <Label x:Name="lblVolunteer" Content="Volunteer" Margin="0,10,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderBrush="{x:Null}" Grid.Column="1"/>
+            <Label x:Name="lblRegHours" Content="Regular Hours" Margin="0,10,0,0" VerticalAlignment="Top" Height="30" Width="120" BorderBrush="{x:Null}" Grid.Column="2"/>
+            <Label x:Name="lblPTOUsed" Content="PTO Used" Margin="0,10,0,0" VerticalAlignment="Top" Height="30" Width="118" BorderBrush="{x:Null}" Grid.Column="3"/>
+            <ComboBox x:Name="cbobxVolunteer" HorizontalAlignment="Center" Margin="0,55,0,0" VerticalAlignment="Top" Width="120" DisplayMemberPath="FullName" SelectionChanged="cbobxVolunteer_SelectionChanged" Height="30" Grid.Column="1"/>
+            <TextBox x:Name="txtRegularHours" HorizontalAlignment="Center" Margin="0,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="30" Grid.Column="2" PreviewTextInput="txtRegularHours_PreviewTextInput"/>
+            <TextBox x:Name="txtPTOUsed" Margin="0,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Grid.Column="3" HorizontalAlignment="Center" Width="120" PreviewTextInput="txtRegularHours_PreviewTextInput"/>
+            <Button x:Name="btnAddPerson" Content="Add To Table" Margin="0,58,0,0" VerticalAlignment="Top" Width="98" Click="btnAddPerson_Click" RenderTransformOrigin="0.496,0.567" Grid.Column="5" Height="30"/>
+
+            <ToggleButton Grid.Row="0" Grid.Column="4"
+                                      IsChecked="{Binding IsPTOEligible, Mode=TwoWay}" 
+                                      x:Name="chkIsPtoEligible"
+                                      HorizontalAlignment="Center" Margin="0,55,0,0" VerticalAlignment="Top" Width="48" Style="{hc:StaticResource ToggleButtonSwitch}" Height="30"/>
+            <Label x:Name="lblPtoEligibility" Content="PTO Eligibility" Margin="0,10,0,0" VerticalAlignment="Top" Height="30" Width="118" BorderBrush="{x:Null}" Grid.Column="4"/>
+
+        </Grid>
+        <Grid Margin="0,0,0,97" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="10,10,10,10">
+                <Label x:Name="lblYear" Content="Year" Height="30" Width="44" BorderBrush="{x:Null}"/>
+                <Label x:Name="lblYearNumber" Content="" BorderBrush="{x:Null}"/>
+                <Label x:Name="lblMonth" Content="Month" Height="30" Width="57" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                <Label x:Name="lblMonthName" Content="" BorderBrush="{x:Null}"/>
+            </StackPanel>
+            <StackPanel Margin="10,10,10,10" Grid.Column="1">
+
+                <Grid Height="36">
+
+
+                    <Label x:Name="lblPTORate" Content="PTO Rate" Height="30" Width="70" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtPTORate" TextWrapping="Wrap" Margin="75,0,100,0" IsEnabled="False"/>
+
+                </Grid>
+                <Grid Height="50">
+
+                    <Label x:Name="lblCurrentStipendRate" Content="Current Stipend Rate" HorizontalAlignment="Left" Height="30" Width="133" Background="White" BorderBrush="{x:Null}"/>
+                    <TextBox x:Name="txtCurrentStipendRate" TextWrapping="Wrap" Margin="138,10,10,10" IsEnabled="False"/>
+
+                </Grid>
+
+
+            </StackPanel>
+
+
+
+            <Button Name="btnPTOSave" BorderThickness="0"  Click="btnSave_Click" Grid.Column="2" Padding="0" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" ToolTip="Save Edit">
+
+                <Image Source="\Resources\save-icon.png"/>
+
+            </Button>
+
+            <Button Name="btnPtoCancel" BorderThickness="0" Click="btnCancel_Click" Padding="0" HorizontalAlignment="Right" Margin="0,10,50,0" VerticalAlignment="Top" Grid.Column="2" ToolTip="Close Page">
+
+
+                <Image Source="\Resources\cancel-icon.png"/>
+            </Button>
+
+
+        </Grid>
+
+
+
+
+
+
+
+    </Grid>
+</Window>

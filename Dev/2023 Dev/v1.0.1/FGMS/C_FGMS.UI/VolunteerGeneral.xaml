@@ -1,0 +1,484 @@
+<Page x:Class="C_FGMS.UI.VolunteerGeneral"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:data="clr-namespace:B_FGMS.BusinessLogic.Models.Volunteer;assembly=B_FGMS.BusinessLogic"
+      xmlns:local="clr-namespace:C_FGMS.UI"
+      mc:Ignorable="d"
+      xmlns:hc="https://handyorg.github.io/handycontrol" 
+      xmlns:local1="clr-namespace:C_FGMS.UI.Converters"
+      d:DesignHeight="450" d:DesignWidth="900"
+      Title="VolunteerGeneral">
+    <!-- Volunteer General Page
+         Author: Isabelle Johns
+         Last Modified: 2/8/23-->
+    <Page.Resources>
+        <local1:StringToPhoneConverter x:Key="StringToPhoneConverter"/>
+    </Page.Resources>
+    
+    <Grid Background="White" x:Name="grdMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.15*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="7.5*" />
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <Style TargetType="hc:Card" BasedOn="{StaticResource CardBaseStyle}">
+                <Style.Setters>
+                    <Setter Property="Effect" Value="{DynamicResource EffectShadow2}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="#FFF6F6F6"/>
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="hc:TextBox" BasedOn="{StaticResource BaseStyle}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="Margin" Value="4,4,4,20"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="Margin" Value="5,0,0,2"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="Grid.Column" Value="1">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="hc:Divider" BasedOn="{StaticResource DividerBaseStyle}">
+                <Style.Setters>
+                    <Setter Property="Grid.ColumnSpan" Value="2"/>
+                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                    <Setter Property="Margin" Value="2,0,2,0"/>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="Grid.Row" Value="0">
+                        <Setter Property="LineStroke" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="hc:DatePicker" BasedOn="{StaticResource DatePicker.Small}">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="0,0,4,2"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="Grid.Column" Value="1"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="ToggleButton" BasedOn="{hc:StaticResource ToggleButtonSwitch}">
+                <Setter Property="Margin" Value="5,0,0,0"/>
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style>
+            <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+                <Setter Property="Margin" Value="0,0,0,4"/>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Grid.Column" Value="1"/>
+            </Style>
+            <Style TargetType="hc:ScrollViewer" BasedOn="{StaticResource ScrollViewerBaseStyle}">
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            </Style>
+            <Style TargetType="hc:ComboBox" BasedOn="{StaticResource ComboBoxPlusBaseStyle}">
+                <Setter Property="hc:TitleElement.TitlePlacement" Value="Left"/>
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="AutoComplete" Value="True"/>
+                <Setter Property="IsEditable" Value="True"/>
+                <Setter Property="ShowClearButton" Value="True"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="auto"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="Margin" Value="4,4,4,20"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+
+        <!-- Dropdown selector -->
+        <hc:ComboBox Grid.Row="0" Grid.Column="0" AutoComplete="True" IsEditable="True"
+                     Width="auto" Height="auto" Margin="10" ShowClearButton="True"
+                     SelectedValuePath="Tuid"
+                     DisplayMemberPath="FullName"
+                     ItemsSource="{Binding VolunteerList}"
+                     SelectedValue="{Binding VolunteerTuid}"
+                     Name="cmbSelectVolunteer"
+                     hc:InfoElement.Placeholder="Volunteer Name" 
+                     SelectionChanged="cmbSelectVolunteer_SelectionChanged" 
+                     Loaded="cmbSelectVolunteer_Loaded"/>
+
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Select Year:"/>
+            <hc:ComboBox Name="cmbSelectYear" Grid.Row="0" Grid.Column="1" Margin="10" MinWidth="100"
+                         SelectedValue="{Binding Year}" ShowClearButton="False" ItemsSource="{Binding YearList}"
+                         HorizontalAlignment="Left" Loaded="cmbSelectYear_Loaded"/>
+        </Grid>
+                            
+        <!-- Label for Editing Mode -->
+        <TextBlock Grid.Column="1" x:Name="txtEditState" Text="Edit Mode" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="30" FontWeight="Bold" Foreground="Salmon"
+                   Visibility="Hidden" Grid.ColumnSpan="2"/>
+
+        <!-- Add/Save/Cancel/Edit/Delete Buttons -->
+        <Grid Grid.Column="2" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button x:Name="btnAdd" Click="btnAddVolunteer_Click"
+                Grid.Column="0"
+                BorderThickness="0" Padding="0" Margin="5,0,5,0"
+                ToolTip="Add a New Volunteer">
+                <Image Source="/Resources/add-icon.png"></Image>
+            </Button>
+            <Button x:Name="btnFinish" Click="btnFinish_Click"
+                Grid.Column="1" Visibility="Collapsed" ToolTip="Save Changes"
+                BorderThickness="0" Padding="0" Margin="5,0,5,0">
+                <Image Source="/Resources/save-icon.png"></Image>
+            </Button>
+            <Button x:Name="btnCancel" Click="btnCancel_Click"
+                Grid.Column="2" Visibility="Hidden" ToolTip="Cancel Changes"
+                BorderThickness="0" Padding="2" Margin="5,0,5,0">
+                <Image Source="/Resources/cancel-icon.png"></Image>
+            </Button>
+            <Button x:Name="btnEdit" Click="btnEdit_Click" ToolTip="Edit Volunteer"
+                Grid.Column="2" BorderThickness="0" Padding="0" Margin="5,0,5,0">
+                <Image Source="/Resources/edit-icon.png"/>
+            </Button>
+            <Button x:Name="btnDelete" Click="btnDelete_Click" ToolTip="Delete Volunteer"
+                Grid.Column="3" BorderThickness="0" Padding="0" Margin="5,0,5,0" >
+                <Image Source="/Resources/delete-icon.png"/>
+            </Button>
+            <Button x:Name="btnRefresh"
+                Grid.Column="4"
+                BorderThickness="0" Padding="0" Margin="5,0,5,0"
+                ToolTip="Refresh Data" Click="btnRefresh_Click">
+                <Image Source="/Resources/refresh-icon.png"></Image>
+            </Button>
+        </Grid>
+
+        <!-- Generic Volunteer Info Card -->
+        <hc:Card Grid.Row="1" Grid.Column="0">
+            <Border CornerRadius="4,4,0,0">
+                <hc:ScrollViewer>
+                    <Grid Name="grdVolunteerGeneral">
+                        <Grid.Resources>
+                            <Style TargetType="hc:TextBox" BasedOn="{StaticResource TextBoxExtend}">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="4"/>
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="Grid.Column" Value="1"/>
+                                <Style.Triggers>
+                                    <Trigger Property="Validation.HasError" Value="True">
+                                        <Setter Property="Margin" Value="4,4,4,20"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <!-- Grid Definitions -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="School:"/>
+                        <TextBlock Grid.Row="1" Text="Phone:"/>
+                        <TextBlock Grid.Row="2" Text="Address Line 1:"/>
+                        <TextBlock Grid.Row="3" Text="Line 2:"/>
+                        <TextBlock Grid.Row="4" Text="City, State:"/>
+                        <TextBlock Grid.Row="5" Text="Zip:"/>
+                        <TextBlock Grid.Row="6" Text="Email:"/>
+                        <TextBlock Grid.Row="7" Text="Alt Phone:"/>
+                        <TextBlock Grid.Row="8" Text="Active:"/>
+                        <TextBlock Grid.Row="9" Text="Start Date:"/>
+                        <TextBlock Grid.Row="10" Text="End Date:"/>
+
+                        <!-- Textboxes with placeholder data -->
+                        <hc:TextBox hc:InfoElement.Placeholder="School Name" Grid.Row="0"
+                                    Text="{Binding SchoolName}" x:Name="txtSchool"/>
+                        <hc:ComboBox Grid.Column="1" AutoComplete="True" IsEditable="True" ItemsSource="{Binding SchoolList}"
+                                     ShowClearButton="True" x:Name="cmbSchoolList" Text="{Binding SchoolName, Mode=OneWayToSource}"
+                                     SelectedValuePath="Tuid" DisplayMemberPath="Name" SelectedValue="{Binding SchoolTuid, Mode=TwoWay}"
+                                     hc:InfoElement.Placeholder="School Name" Visibility="Hidden"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="989-916-9898" Grid.Row="1"
+                                    Text="{Binding Phone, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:(###) ###-###}, Converter={StaticResource StringToPhoneConverter}}" 
+                                    x:Name="txtPhone" PreviewTextInput="txtDigitOnly_PreviewTextInput" MaxLength="14"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="714 Birch Street" Grid.Row="2"
+                                    Text="{Binding Address1, Mode=TwoWay}" MaxLength="45"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="Apt 123 (Optional)" Grid.Row="3"
+                                    Text="{Binding Address2, Mode=TwoWay}" MaxLength="45"/>
+                        <Grid Grid.Row="4" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        
+                        
+                            <hc:TextBox hc:InfoElement.Placeholder="Saginaw" Grid.Column="0"
+                                        Text="{Binding City, Mode=TwoWay}" x:Name="txtCity" MaxLength="45"/>
+                            <hc:TextBox hc:InfoElement.Placeholder="MI" Grid.Column="1"
+                                        Text="{Binding State, Mode=TwoWay}" x:Name="txtState"/>
+                            <hc:ComboBox Grid.Row="0" Grid.ColumnSpan="2" 
+                                         SelectedValuePath="Abbreviations"
+                                         DisplayMemberPath="Name"
+                                         SelectedValue="{Binding State, Mode=TwoWay}"
+                                         x:Name="cmbState"
+                                         Visibility="Hidden"
+                                         hc:InfoElement.Placeholder=" State "/>
+                        </Grid>
+                    
+                    
+                        <hc:TextBox hc:InfoElement.Placeholder="48604" Grid.Row="5"
+                                    Text="{Binding ZipCode, Mode=TwoWay}" MaxLength="5" PreviewTextInput="txtDigitOnly_PreviewTextInput"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="email@gmail.com" Grid.Row="6"
+                                    Text="{Binding Email, Mode=TwoWay}" MaxLength="45"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="N/A" Grid.Row="7"
+                                    Text="{Binding AltPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:(###) ###-###}, Converter={StaticResource StringToPhoneConverter}}"
+                                    MaxLength="14" PreviewTextInput="txtDigitOnly_PreviewTextInput"/>
+                        <hc:TextBox hc:InfoElement.Placeholder="Yes" Grid.Row="8"
+                                    Text="{Binding Active}" x:Name="txtActive"/>
+                        <ToggleButton Grid.Row="8" Grid.Column="1" x:Name="btnStatus"
+                                      IsChecked="{Binding IsActive, Mode=TwoWay}" Content="{Binding Active}"/>
+                        <hc:DatePicker Grid.Row="9" SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="4" x:Name="dprStartDate"/>
+                        <hc:DatePicker Grid.Row="10" SelectedDate="{Binding EndDate, Mode=TwoWay}" Margin="4" x:Name="dprEndDate"/>
+                    </Grid>
+                </hc:ScrollViewer>
+            </Border>
+        </hc:Card>
+
+        <!-- One Time Checks Card -->
+        <hc:Card Grid.Row="1" Grid.Column="1">
+            <Border CornerRadius="4,4,0,0">
+                <hc:ScrollViewer>
+                    <Grid Name="grdOneTimeChecks">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Labels -->
+                        <TextBlock Text="One-Time Checks" Grid.Row="0" Grid.ColumnSpan="2" TextAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Text="File Photo: " Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Service Descr: " Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="Orient. Training: " Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="Confid SOU: " Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock Text="Service Start Date: " Grid.Row="5" Grid.Column="0"/>
+                        <TextBlock Text="NSCHC Check Form: " Grid.Row="6" Grid.Column="0"/>
+                        <TextBlock Text="Background Check: " Grid.Row="7" Grid.Column="0"/>
+                        <TextBlock Text="ID Copy: " Grid.Row="8" Grid.Column="0"/>
+                        <TextBlock Text="NSOPW: " Grid.Row="9" Grid.Column="0"/>
+                        <TextBlock Text="I-Chat: " Grid.Row="10" Grid.Column="0"/>
+                        <TextBlock Text="True-Screen: " Grid.Row="11" Grid.Column="0"/>
+                        <TextBlock Text="Alias F'Print: " Grid.Row="12" Grid.Column="0"/>
+                        <TextBlock Text="Field-Print Cleared: " Grid.Row="13" Grid.Column="0"/>
+                        <TextBlock Text="DHS: " Grid.Row="14" Grid.Column="0"/>
+                        <TextBlock Text="TB Shot: " Grid.Row="15" Grid.Column="0"/>
+
+                        <!-- Dividers -->
+                        <hc:Divider Grid.Row="0"/>
+                        <hc:Divider Grid.Row="1"/>
+                        <hc:Divider Grid.Row="2"/>
+                        <hc:Divider Grid.Row="3"/>
+                        <hc:Divider Grid.Row="4"/>
+                        <hc:Divider Grid.Row="5"/>
+                        <hc:Divider Grid.Row="6"/>
+                        <hc:Divider Grid.Row="7"/>
+                        <hc:Divider Grid.Row="8"/>
+                        <hc:Divider Grid.Row="9"/>
+                        <hc:Divider Grid.Row="10"/>
+                        <hc:Divider Grid.Row="11"/>
+                        <hc:Divider Grid.Row="12"/>
+                        <hc:Divider Grid.Row="13"/>
+                        <hc:Divider Grid.Row="14"/>
+
+                        <!-- Checkboxes & DatePickers -->
+                        <CheckBox Grid.Row="1" IsChecked="{Binding FilePhoto, Mode = TwoWay}"/>
+                        <CheckBox Grid.Row="2" IsChecked="{Binding ServiceDescription, Mode = TwoWay}"/>
+                        <CheckBox Grid.Row="3" IsChecked="{Binding OrientTraining, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="4" SelectedDate="{Binding ConfidenceSOU, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="5" SelectedDate="{Binding ServiceStartDate, Mode = TwoWay}"/>
+                        <CheckBox Grid.Row="6" IsChecked="{Binding NSCHCCheckForm, Mode = TwoWay}"/>
+                        <CheckBox Grid.Row="7" IsChecked="{Binding BackgroundCheck, Mode = TwoWay}"/>
+                        <CheckBox Grid.Row="8" IsChecked="{Binding IDCopy, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="9" SelectedDate="{Binding NSOPW, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="10" SelectedDate="{Binding IChat, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="11" SelectedDate="{Binding TrueScreen, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="12" SelectedDate="{Binding AliasFieldPrint, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="13" SelectedDate="{Binding FieldPrint, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="14" SelectedDate="{Binding DHS, Mode = TwoWay}"/>
+                        <hc:DatePicker Grid.Row="15" SelectedDate="{Binding TBShot, Mode = TwoWay}"/>
+
+                    </Grid>
+                </hc:ScrollViewer>
+            </Border>
+        </hc:Card>
+
+        <!-- Annuals Checks & Temporary Info Card -->
+        <hc:Card Grid.Row="1" Grid.Column="2">
+            <Border CornerRadius="4,4,0,0">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Annual Checks Card -->
+                    <Expander IsExpanded="True" Grid.Row="0">
+                        <Expander.Header>
+                            <TextBlock Text="Annual Checks" FontSize="14" FontWeight="Bold"/>
+                        </Expander.Header>
+
+                        <Grid Name="grdAnnualChecks">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Labels -->
+                            <TextBlock Text="Schedule &amp; Photo Release: " Grid.Row="1" Grid.Column="0"/>
+                            <TextBlock Text="Emergency Beneficiary Form: " Grid.Row="2" Grid.Column="0"/>
+                            <TextBlock Text="Hippa Release: " Grid.Row="3" Grid.Column="0"/>
+                            <TextBlock Text="Physical: " Grid.Row="4" Grid.Column="0"/>
+                            <TextBlock Text="Annual Income Car Insurance: " Grid.Row="5" Grid.Column="0"/>
+
+                            <!-- Dividers -->
+                            <hc:Divider Grid.Row="1"/>
+                            <hc:Divider Grid.Row="2"/>
+                            <hc:Divider Grid.Row="3"/>
+                            <hc:Divider Grid.Row="4"/>
+                            <hc:Divider Grid.Row="5"/>
+
+                            <!-- (Placeholder) DATA -->
+                            <TextBlock Grid.Row="1" Grid.Column="1" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" />
+                            <TextBlock Grid.Row="5" Grid.Column="1" />
+
+                            <!-- Hidden Date Pickers -->
+                            <hc:DatePicker Grid.Row="1" SelectedDate="{Binding SchedulePhotoRelease, Mode=TwoWay}"/>
+                            <hc:DatePicker Grid.Row="2" SelectedDate="{Binding EmergencyBeneficiary, Mode=TwoWay}"/>
+                            <hc:DatePicker Grid.Row="3" SelectedDate="{Binding HippaRelease, Mode=TwoWay}"/>
+                            <hc:DatePicker Grid.Row="4" SelectedDate="{Binding Physical, Mode=TwoWay}"/>
+                            <hc:DatePicker Grid.Row="5" SelectedDate="{Binding AnnualIncomeCarInsurance, Mode=TwoWay}"/>
+
+                        </Grid>
+                    </Expander>
+
+                    <!-- Temporary Information Card -->
+                    <Expander Grid.Row="1" IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock Text="Temporary Information" FontSize="14" FontWeight="Bold"/>
+                        </Expander.Header>
+                        <Grid Name="grdTempInfo">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </Expander>
+                </Grid>
+            </Border>
+        </hc:Card>
+    </Grid>
+
+</Page>

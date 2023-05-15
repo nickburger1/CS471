@@ -1,0 +1,53 @@
+﻿<Window x:Class="C_FGMS.UI.UserAdminTaskConditionUpdate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local1="clr-namespace:C_FGMS.UI.Converters"
+        xmlns:local="clr-namespace:C_FGMS.UI"
+        mc:Ignorable="d"
+        Title="Update Condition" Height="300" Width="500">
+
+    <Window.Resources>
+        <local1:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
+    </Window.Resources>
+
+    <!--Author: Tyler Moody-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Save and cancel buttons. -->
+        <Grid HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnSave" Grid.Column="0" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btnSave_Click" Command="{Binding UpdateCommand}" IsEnabled="{Binding HasErrors, Converter={StaticResource BoolToOppositeBoolConverter}}">
+                <Image Source="/resources/save-icon.png" ToolTip="Save"/>
+            </Button>
+            <Button x:Name="btnCancel" VerticalAlignment="Top" Margin="5,0,5,0" HorizontalAlignment="Right" Grid.Column="1" Click="btnCancel_Click">
+                <Image Source="/resources/cancel-icon.png" ToolTip="Cancel"/>
+            </Button>
+        </Grid>
+
+        <!-- Condition fields -->
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <TextBlock HorizontalAlignment="Left" Margin="38,8,0,0" TextWrapping="Wrap" Text="Condition" VerticalAlignment="Top" Width="100" Height="16"/>
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <hc:TextBox Text="{Binding Acronym, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Width="424" Name="txtAcronym" hc:InfoElement.Title="Acronym: " MaxLines="1" TabIndex="1"/>
+        </Grid>
+        <Grid Grid.Row="3" HorizontalAlignment="Center">
+            <hc:TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Width="424" Name="txtDescription" hc:InfoElement.Title="Description: " MaxLines="3" TabIndex="1"/>
+        </Grid>
+    </Grid>
+</Window>

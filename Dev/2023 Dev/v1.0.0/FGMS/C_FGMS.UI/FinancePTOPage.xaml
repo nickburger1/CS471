@@ -1,0 +1,334 @@
+﻿<Page x:Class="C_FGMS.UI.FinancePTOPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:C_FGMS.UI"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="900"
+      Title="FinancePTOPage">
+
+
+	<!--Author: Brendan Breuss, Edited By: Nicklas Mortensen-Seguin -->
+    <Grid Background="White" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!--This is all the comboboxes at the top of page-->
+        <hc:Card Grid.Row="0" Grid.Column="0">
+            <Grid ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=".5*"/>
+                    <RowDefinition Height="1.25*"/>
+                </Grid.RowDefinitions>
+                <Label Name="lblPTOYear" Content="Year"  BorderThickness="0" BorderBrush="{x:Null}" Background="{x:Null}"/>
+                <hc:ComboBox  Name="cbobxPTOYear" VerticalAlignment="Top" Margin="5,5,5,0" Grid.Row="1" SelectedIndex="0"/>
+
+                <Label x:Name="lblPTOMonths" Content="Month"  BorderThickness="0" Grid.Column="1"/>
+                <hc:ComboBox  x:Name="cbobxPTOMonths" VerticalAlignment="Top"  Grid.Column="1" Grid.Row="1" Margin="5,5,5,0" SelectedIndex="0"/>
+
+                <!--This is the rates table.-->
+                <Border VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,0"  Grid.Column="4" Grid.Row="0" Background="#F0EFEF">
+                    <Label Name="lblPTORates" BorderThickness="0" Background="#F0EFEF">Rates</Label>
+                </Border>
+                <Border VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="1,0,1,1"  Grid.Column="4" Grid.Row="1" Background="#F0EFEF">
+
+                    <hc:SimpleStackPanel Orientation="Vertical" Grid.Column="4" Grid.Row="2" Background="#F0EFEF" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+
+                        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label BorderThickness="0" Name="lblPTOStipendRate" Background="#F0EFEF" HorizontalAlignment="Center" VerticalAlignment="Top">Stipend Rate:</Label>
+                            <TextBox Name="txtBoxPTOStipendRate" IsEnabled="False" BorderThickness="0" Text="3.15" TextAlignment="Left" Background="#F0EFEF" VerticalAlignment="Top"/>
+                            <hc:ButtonGroup/>
+                        </hc:SimpleStackPanel>
+                        <Separator Margin="0,0,0,1" Background="#F0EFEF"/>
+                        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label BorderThickness="0" Name="lblPTOMileageRate" Background="#F0EFEF" HorizontalAlignment="Center" VerticalAlignment="Top">PTO Rate:</Label>
+                            <TextBox Name="txtBoxPTORate" IsEnabled="False" BorderThickness="0" Text="0.12" TextAlignment="Left" Background="#F0EFEF" VerticalAlignment="Top"/>
+                        </hc:SimpleStackPanel>
+
+                    </hc:SimpleStackPanel>
+                </Border>
+
+            </Grid>
+        </hc:Card>
+
+        <!--Print/Edit and Save/Cancel Buttons-->
+        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="btnPTOEdit" BorderThickness="0"  Click="BtnPtoEdit_Click" Grid.Column="0" Padding="0" Margin="5,5,5,0" ToolTip="Edit PTO Table" >
+                <Image Source="\Resources\edit-icon.png" />
+            </Button>
+
+            <Button Name="btnPrintToExcel" BorderThickness="0"  Grid.Column="1" Padding="0" Margin="5,5,5,0" Click="btnPrintToExcel_Click" ToolTip="Export To Excel">
+                <Image Source="\Resources\reports-icon.png" />
+            </Button>
+
+            <Button Name="btnRefresh" BorderThickness="0"  Grid.Column="2" Padding="0" Margin="5,5,5,0" Click="btnRefresh_Click" ToolTip="Refresh Page">
+                <Image Source="\Resources\refresh-icon.png" />
+            </Button>
+
+        </Grid>
+
+        <!--Search Volunteer Section-->
+        <hc:Card Grid.Row="1" Grid.Column="0" BorderThickness="0">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="154*"/>
+                    <ColumnDefinition Width="154*"/>
+                    <ColumnDefinition Width="107*"/>
+                    <ColumnDefinition Width="356*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Name="lblPTOSearchVolunteer" Background="White" BorderThickness="0">Search Volunteer</Label>
+                <TextBox x:Name="txtPTOSearchVolunteer" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="134" TextChanged="txtPTOSearchVolunteer_TextChanged" />
+            </Grid>
+        </hc:Card>
+
+        <!--Table at the center of the page-->
+        <hc:Card Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+            <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" Name="dtgPTO" ColumnHeaderHeight="25" RowHeight="40" Background="white"  
+                                          GridLinesVisibility="None" CanUserResizeColumns="False" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" AlternatingRowBackground="#FFBEBEBE" SelectionMode="Single">
+
+
+                <!--Centers our datagrid columns don't look at this its jank-->
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+
+                        <!-- Changes the row style template to have more advanced "borders" (dotted, dashed, etc.) based on value converters -->
+
+
+                        <!-- Part for odd rows. -->
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                          Value="False"/>
+                                    <Condition Property="AlternationIndex"
+                          Value="1"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Background"
+                       Value="Transparent"/>
+
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                          Value="True"/>
+                                    <Condition Property="AlternationIndex"
+                          Value="1"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Background"
+                       Value="LightGray"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+
+                            <!-- Part for even rows. -->
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                          Value="False"/>
+                                    <Condition Property="AlternationIndex"
+                          Value="0"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Background"
+                       Value="Transparent"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                          Value="True"/>
+                                    <Condition Property="AlternationIndex"
+                          Value="0"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Background"
+                       Value="Salmon"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+
+                        </Style.Triggers>
+
+
+
+
+                    </Style>
+
+
+                </DataGrid.RowStyle>
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                      Value="True">
+                                <Setter Property="Background"
+                    Value="Transparent"/>
+
+                            </DataTrigger>
+                        </Style.Triggers>
+
+
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Grid Background="{TemplateBinding Background}">
+
+
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                    </Grid>
+
+
+
+
+                                </ControlTemplate>
+
+
+
+
+                            </Setter.Value>
+
+
+
+
+                        </Setter>
+
+                    </Style>
+                </DataGrid.CellStyle>
+
+
+
+
+
+
+
+
+
+
+
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="Salmon"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+
+                <DataGrid.Columns>
+
+
+
+
+                    <DataGridComboBoxColumn x:Name="colVolunteerName" Width="*" Header="Volunteer Name" TextBinding="{Binding strFullName, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding strFullName}" DisplayMemberPath="strFullName">
+                    </DataGridComboBoxColumn>
+                    <DataGridTextColumn x:Name="colRegHours" Width="*" Header="Reg Hours" Binding="{Binding RegularHours, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn x:Name="colPtoUsed" Width="*" Header="PTO Used" Binding="{Binding PtoUsed, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn x:Name="colPtoEarned" Width="*" Header="PTO Earned" Binding="{Binding PtoEarned, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="colPtoStart" Width="*" Header="PTO Start" Binding="{Binding PtoStart, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="colEndingPto" Width="*" Header="Ending PTO" Binding="{Binding PtoEnd, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="colStipendPaid" Width="*" Header="Stipend Paid" Binding="{Binding StipendPaid, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="colYTDHours" Width="*" Header="YTD Hours" Binding="{Binding YearToDateHour, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+
+
+
+                    
+                </DataGrid.Columns>
+            </DataGrid>
+        </hc:Card>
+
+        <!--Totals of the Table directly above-->
+        <hc:Card Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Name="lblPTOTotals" Background="White" BorderThickness="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">Totals:</Label>
+                <Label Name="lblPTORegHoursTotal" Background="White" BorderThickness="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">0</Label>
+                <Label Name="lblPTOUsedTotal" Background="White" BorderThickness="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">0</Label>
+                <Label Name="lblPTOEarnedTotal" Background="White" BorderThickness="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">0</Label>
+                <Label Name="lblPTOStartTotal" Background="White" BorderThickness="0" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center">0</Label>
+                <Label Name="lblPTOEndingTotal" Background="White" BorderThickness="0" Grid.Column="5">0</Label>
+                <Label Name="lblPTOStipendPaidTotal" Background="White" BorderThickness="0" Grid.Column="6">0</Label>
+                <Label Name="lblPTOytdHoursTotal" Background="White" BorderThickness="0" Grid.Column="7">0</Label>
+            </Grid>
+        </hc:Card>
+
+
+        <!--Totals Found at the bottom of the page-->
+        <hc:Card Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Name="lblPTOytdStipendPaidTotal" Background="White" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">YTD Stipends Paid:</Label>
+                <Label Name="lblPTOytdStipendPaidTotalNumber" Background="White" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">$10,025.25</Label>
+                <Label Name="lblPTOytdStipendPaidThisPeriod" Background="White" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0">Stipends Payed This Period:</Label>
+                <Label Name="lblPTOytdStipendPaidThisPeriodNumber" Background="White" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="3" Grid.Row="0">$1,056</Label>
+                <Label Name="lblPTOBeginningStipend" Background="White" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1">Beginning Stipends:</Label>
+                <Label Name="lblPTOBeginningStipendNumber" Background="White" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">$173,940.00</Label>
+                <Label Name="lblPTOStipendRemaining" Background="White" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1">Stipends Remaining:</Label>
+                <Label Name="lblPTOStipendRemainingNumber" Background="White" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="3" Grid.Row="1">$172,884.00</Label>
+            </Grid>
+
+        </hc:Card>
+
+
+    </Grid>
+
+</Page>
